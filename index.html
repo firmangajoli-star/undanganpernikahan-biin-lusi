@@ -19,6 +19,12 @@
 <meta name="twitter:image" content="https://files.catbox.moe/yrv890.jpg">
 <!-- ==================================================================== -->
 
+<!-- ================= PRELOAD GAMBAR (AGAR TIDAK DELAY) ================= -->
+<link rel="preload" as="image" href="https://files.catbox.moe/dfnrw0.jpg">
+<link rel="preload" as="image" href="https://files.catbox.moe/ibyzh5.jpg">
+<link rel="preload" as="image" href="https://files.catbox.moe/tbqyhf.jpg">
+<!-- ==================================================================== -->
+
 <!-- FONT ELEGAN -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +37,6 @@
   --cream:#f7f1e6;
   --brown:#2a1c15;
   --dark:#1a110c;
-  /* BACKGROUND KEJAWEN */
   --bg-img: url('https://files.catbox.moe/dfnrw0.jpg'); 
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -53,7 +58,29 @@ img{display:block;max-width:100%}
 button{font-family:inherit}
 a{text-decoration:none}
 
-/* ---------- cover ---------- */
+/* ---------- Video Cover ---------- */
+#video-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease, visibility 1s ease;
+}
+#video-cover.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+#video-cover video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Agar video memenuhi layar tanpa merusak rasio */
+}
+
+/* ---------- cover utama (disembunyikan sampai video selesai) ---------- */
 .cover{
   position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:26px;
   background-color: rgba(10, 5, 2, 0.75); backdrop-filter: blur(3px);
@@ -66,7 +93,6 @@ a{text-decoration:none}
 .cover-inner{position:relative;text-align:center;max-width:340px;width:100%;animation:fadeUp 1.2s ease both;}
 .cover-top{font-size:.65rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold-l);opacity:.9;}
 .cover-orn{margin:16px 0 4px;color:var(--gold);font-size:1rem;letter-spacing:.5em;}
-
 .cover-names{font-family:'Pinyon Script', cursive;font-size:clamp(3rem, 15vw, 4.2rem);font-weight:400;line-height:1.1;color:var(--gold-l);text-shadow:0 2px 18px rgba(201,162,39,.45);margin:6px 0 10px;}
 .cover-date{font-size:.75rem;letter-spacing:.28em;color:rgba(247,241,230,.85);text-transform:lowercase;}
 .cover-line{width:70px;height:1px;margin:22px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
@@ -87,7 +113,6 @@ a{text-decoration:none}
 .section{padding:52px 22px;text-align:center;position:relative;border-bottom:1px solid rgba(201,162,39,.2);}
 .section:last-child{border-bottom:0}
 .batik {background: rgba(15, 8, 5, 0.3);} 
-
 .sec-title{font-family:'Pinyon Script', cursive;font-size:2.5rem;font-weight:400;color:var(--gold-l);letter-spacing:.01em;text-transform:lowercase;margin-bottom:5px;}
 .orn{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--gold);font-size:.8rem;margin:14px 0 8px;}
 .orn::before,.orn::after{content:'';height:1px;width:52px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
@@ -102,7 +127,6 @@ a{text-decoration:none}
 .photo{width:190px;height:250px;margin:0 auto 18px;border-radius:100px 100px 14px 14px;overflow:hidden;border:2px solid rgba(201,162,39,.85);box-shadow:0 0 0 7px rgba(201,162,39,.15), 0 18px 40px rgba(0,0,0,.6);background:rgba(201,162,39,.08);position:relative;}
 .photo img{width:100%;height:100%;object-fit:cover}
 .ph-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(201,162,39,.55);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;}
-
 .c-name{font-family:'Cinzel', serif;font-size:1.25rem;font-weight:600;color:var(--cream);letter-spacing:.05em;line-height:1.4;}
 .c-nick{font-family:'Pinyon Script', cursive;font-size:2rem;color:var(--gold-l);margin:2px 0 10px;}
 .c-parents{font-size:.75rem;line-height:1.85;color:rgba(247,241,230,.7);margin-bottom:16px;}
@@ -174,8 +198,13 @@ a{text-decoration:none}
 </head>
 <body class="locked">
 
-<!-- ================= COVER ================= -->
-<div id="cover" class="cover">
+<!-- ================= VIDEO COVER PEMBUKA ================= -->
+<div id="video-cover">
+  <video id="opening-video" src="https://files.catbox.moe/sw58ym.mp4" autoplay muted playsinline></video>
+</div>
+
+<!-- ================= COVER UTAMA ================= -->
+<div id="cover" class="cover" style="display:none;">
   <div class="cover-frame"></div>
   <div class="cover-inner">
     <div class="cover-top">undangan pernikahan</div>
@@ -268,7 +297,6 @@ a{text-decoration:none}
 (function () {
   'use strict';
 
-  // DATA CADANGAN (Jika Google Sheet gagal diakses)
   var FALLBACK = {
     groom_full: "tobi'in", groom_nick: "bi'in", groom_father: "warto", groom_mother: "tri harsih", groom_ig: "https://www.instagram.com/mz_atenk", 
     groom_photo: "https://files.catbox.moe/ibyzh5.jpg",
@@ -319,7 +347,7 @@ a{text-decoration:none}
     var html = '', count = 0;
     for (var i = 1; i <= 10; i++) {
       var url = g('gallery' + i);
-      if (url) { count++; html += '<div class="gallery-item"><img src="' + imgUrl(url) + '" alt="galeri"></div>'; }
+      if (url) { count++; html += '<div class="gallery-item"><img src="' + imgUrl(url) + '" alt="galeri" loading="lazy"></div>'; }
     }
     if (count === 0) html = '<div class="gallery-item"><div class="ph-empty">belum ada foto</div></div>';
     else html = html + html; 
@@ -369,16 +397,16 @@ a{text-decoration:none}
     if (cdTimer) clearInterval(cdTimer); tick(); cdTimer = setInterval(tick, 1000);
   }
 
-  // LOGIKA MUSIK YOUTUBE
+  // LOGIKA MUSIK YOUTUBE BEBAS IKLAN
   var musicPlaying = false;
   var ytBox = qs('#ytplayer');
   var musicBtn = qs('#musicBtn');
-  var videoId = 'moZNGtKcOFg'; // ID Video Maher Zain - Sepanjang Hidup
+  var videoId = 'b8rBYAzW3-g'; // ID Musik Baru
 
   function startMusic() {
     if (musicPlaying) return;
     ytBox.innerHTML = '<iframe width="1" height="1" allow="autoplay; encrypted-media" ' +
-      'src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&loop=1&playlist=' + videoId + '&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3"></iframe>';
+      'src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&loop=1&playlist=' + videoId + '&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&showinfo=0"></iframe>';
     musicPlaying = true; 
     musicBtn.classList.add('playing');
   }
@@ -412,20 +440,37 @@ a{text-decoration:none}
     try { var p = new URLSearchParams(window.location.search), to = p.get('to') || p.get('kepada') || ''; if (to) qs('#guestName').textContent = decodeURIComponent(to.replace(/\+/g, ' ')); } catch (e) {}
   }
 
+  // LOGIKA VIDEO PEMBUKA & TOMBOL BUKA UNDANGAN
+  var videoCover = qs('#video-cover');
+  var openingVideo = qs('#opening-video');
+  var mainCover = qs('#cover');
+
+  // Jika video selesai diputar, sembunyikan video dan tampilkan cover utama
+  openingVideo.addEventListener('ended', function() {
+    videoCover.classList.add('hide');
+    mainCover.style.display = 'flex'; // Tampilkan cover utama
+  });
+
+  // Cadangan: Jika browser memblokir autoplay video (video tidak berputar otomatis)
+  // Pengunjung bisa mengklik video untuk lanjut ke cover utama
+  videoCover.addEventListener('click', function() {
+    videoCover.classList.add('hide');
+    mainCover.style.display = 'flex';
+  });
+
   function bindOpen() {
     qs('#openBtn').addEventListener('click', function () {
       qs('#cover').classList.add('hide'); 
       document.body.classList.remove('locked'); 
       window.scrollTo(0, 0);
       
-      startMusic(); // Memulai YouTube setelah tombol diklik
+      startMusic(); 
       
       musicBtn.classList.add('show'); 
       setTimeout(function () { qs('#cover').style.display = 'none'; }, 1100);
     });
   }
 
-  // TARIK DATA DARI GOOGLE SHEET
   function loadData() {
     var sheetUrl = 'https://docs.google.com/spreadsheets/d/1nH8asn81GKzYq2Fquk7cDrTpWPsBEPjiZjebpo0V0A4/gviz/tq?tqx=out:csv';
     return fetch(sheetUrl)
