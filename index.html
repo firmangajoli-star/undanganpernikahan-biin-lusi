@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://files.catbox.moe/yrv890.jpg">
 <!-- ==================================================================== -->
 
-<!-- FONT ELEGAN (PINYON SCRIPT, CINZEL, LORA) -->
+<!-- FONT ELEGAN -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lora:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
@@ -31,7 +31,6 @@
   --cream:#f7f1e6;
   --brown:#2a1c15;
   --dark:#1a110c;
-  /* BACKGROUND KEJAWEN */
   --bg-img: url('https://files.catbox.moe/dfnrw0.jpg'); 
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -67,9 +66,7 @@ a{text-decoration:none}
 .cover-top{font-size:.65rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold-l);opacity:.9;}
 .cover-orn{margin:16px 0 4px;color:var(--gold);font-size:1rem;letter-spacing:.5em;}
 
-/* Nama Cover pakai Pinyon Script */
 .cover-names{font-family:'Pinyon Script', cursive;font-size:clamp(3rem, 15vw, 4.2rem);font-weight:400;line-height:1.1;color:var(--gold-l);text-shadow:0 2px 18px rgba(201,162,39,.45);margin:6px 0 10px;}
-
 .cover-date{font-size:.75rem;letter-spacing:.28em;color:rgba(247,241,230,.85);text-transform:lowercase;}
 .cover-line{width:70px;height:1px;margin:22px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
 .cover-guest{display:flex;flex-direction:column;gap:5px;margin-bottom:24px;}
@@ -90,7 +87,6 @@ a{text-decoration:none}
 .section:last-child{border-bottom:0}
 .batik {background: rgba(15, 8, 5, 0.3);} 
 
-/* Judul Section pakai Pinyon Script */
 .sec-title{font-family:'Pinyon Script', cursive;font-size:2.5rem;font-weight:400;color:var(--gold-l);letter-spacing:.01em;text-transform:lowercase;margin-bottom:5px;}
 .orn{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--gold);font-size:.8rem;margin:14px 0 8px;}
 .orn::before,.orn::after{content:'';height:1px;width:52px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
@@ -106,10 +102,7 @@ a{text-decoration:none}
 .photo img{width:100%;height:100%;object-fit:cover}
 .ph-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(201,162,39,.55);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;}
 
-/* Nama Lengkap pakai Cinzel */
 .c-name{font-family:'Cinzel', serif;font-size:1.25rem;font-weight:600;color:var(--cream);letter-spacing:.05em;line-height:1.4;}
-
-/* Nama Panggilan pakai Pinyon Script */
 .c-nick{font-family:'Pinyon Script', cursive;font-size:2rem;color:var(--gold-l);margin:2px 0 10px;}
 .c-parents{font-size:.75rem;line-height:1.85;color:rgba(247,241,230,.7);margin-bottom:16px;}
 .amp{font-family:'Pinyon Script', cursive;font-size:3rem;color:var(--gold);margin:15px 0;opacity:.9;}
@@ -171,9 +164,6 @@ a{text-decoration:none}
 #musicBtn.playing .disc{animation:spin 3.6s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(min-width:520px){ #musicBtn{right:calc(50% - 224px)} }
-
-/* PLAYER YOUTUBE TERSEMBUNYI */
-#ytplayer{position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:.01;overflow:hidden;pointer-events:none;z-index:-1;}
 
 /* ---------- reveal ---------- */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease, transform .9s ease}
@@ -268,15 +258,16 @@ a{text-decoration:none}
   <div class="footer">terima kasih atas doa dan restunya</div>
 </main>
 
-<!-- PLAYER YOUTUBE (Tersembunyi) -->
-<div id="ytplayer"></div>
+<!-- WADAH UNTUK YOUTUBE API -->
+<div id="ytplayer" style="position:fixed; bottom:0; right:0; width:1px; height:1px; opacity:0.01; pointer-events:none; z-index:-1;"></div>
+
 <button id="musicBtn" aria-label="musik"><span class="disc">🎵</span></button>
 
 <script>
 (function () {
   'use strict';
 
-  // DATA CADANGAN (Jika Google Sheet gagal diakses)
+  // DATA CADANGAN
   var FALLBACK = {
     groom_full: "tobi'in", groom_nick: "bi'in", groom_father: "warto", groom_mother: "tri harsih", groom_ig: "https://www.instagram.com/mz_atenk", 
     groom_photo: "https://files.catbox.moe/ibyzh5.jpg",
@@ -367,105 +358,4 @@ a{text-decoration:none}
   var cdTimer = null;
   function startCountdown() {
     var target = new Date(g('akad_date')).getTime();
-    if (isNaN(target)) target = new Date('2026-11-16T16:00:00+07:00').getTime();
-    function tick() {
-      var diff = target - Date.now(); if (diff < 0) diff = 0;
-      var d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
-      qs('#cdDay').textContent = pad(d); qs('#cdHour').textContent = pad(h); qs('#cdMin').textContent = pad(m); qs('#cdSec').textContent = pad(s);
-    }
-    function pad(n) { return n < 10 ? '0' + n : String(n); }
-    if (cdTimer) clearInterval(cdTimer); tick(); cdTimer = setInterval(tick, 1000);
-  }
-
-  // LOGIKA MUSIK YOUTUBE
-  var musicPlaying = false;
-  var ytBox = qs('#ytplayer');
-  var musicBtn = qs('#musicBtn');
-  var videoId = 'moZNGtKcOFg'; // ID Video YouTube
-
-  function startMusic() {
-    if (musicPlaying) return;
-    ytBox.innerHTML = '<iframe width="1" height="1" allow="autoplay; encrypted-media" ' +
-      'src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&loop=1&playlist=' + videoId + '&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3"></iframe>';
-    musicPlaying = true; 
-    musicBtn.classList.add('playing');
-  }
-  
-  function stopMusic() { 
-    ytBox.innerHTML = ''; 
-    musicPlaying = false; 
-    musicBtn.classList.remove('playing'); 
-  }
-  
-  musicBtn.addEventListener('click', function () { musicPlaying ? stopMusic() : startMusic(); });
-
-  function copyText(text, btn) {
-    var label = btn.textContent;
-    function done() { btn.textContent = 'tersalin ✓'; setTimeout(function () { btn.textContent = label; }, 1600); }
-    function fallback() { var ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch (e) {} document.body.removeChild(ta); }
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(fallback); else fallback();
-  }
-  document.addEventListener('click', function (e) { var btn = e.target.closest('[data-copy]'); if (btn) copyText(btn.getAttribute('data-copy'), btn); });
-
-  var observer = null;
-  function observeReveal() {
-    var items = document.querySelectorAll('.reveal');
-    if (!('IntersectionObserver' in window)) { for (var i = 0; i < items.length; i++) items[i].classList.add('show'); return; }
-    if (observer) observer.disconnect();
-    observer = new IntersectionObserver(function (entries) { entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('show'); observer.unobserve(en.target); } }); }, { threshold: 0.12 });
-    for (var j = 0; j < items.length; j++) observer.observe(items[j]);
-  }
-
-  function setGuestName() {
-    try { var p = new URLSearchParams(window.location.search), to = p.get('to') || p.get('kepada') || ''; if (to) qs('#guestName').textContent = decodeURIComponent(to.replace(/\+/g, ' ')); } catch (e) {}
-  }
-
-  function bindOpen() {
-    qs('#openBtn').addEventListener('click', function () {
-      qs('#cover').classList.add('hide'); 
-      document.body.classList.remove('locked'); 
-      window.scrollTo(0, 0);
-      
-      startMusic(); // Memulai YouTube setelah tombol diklik (menghindari blokir autoplay)
-      
-      musicBtn.classList.add('show'); 
-      setTimeout(function () { qs('#cover').style.display = 'none'; }, 1100);
-    });
-  }
-
-  // TARIK DATA DARI GOOGLE SHEET (Metode CSV untuk GitHub)
-  function loadData() {
-    var sheetUrl = 'https://docs.google.com/spreadsheets/d/1nH8asn81GKzYq2Fquk7cDrTpWPsBEPjiZjebpo0V0A4/gviz/tq?tqx=out:csv';
-    return fetch(sheetUrl)
-      .then(function (res) { return res.text(); })
-      .then(function (csv) {
-        var lines = csv.split(/\r?\n/);
-        var result = {};
-        for (var i = 1; i < lines.length; i++) {
-          var line = lines[i].trim();
-          if (!line) continue;
-          var match = line.match(/^"?(.*?)"?,(.*)$/);
-          if (match) {
-            var key = match[1].trim().replace(/^"|"$/g, '');
-            var val = match[2].trim().replace(/^"|"$/g, '').replace(/""/g, '"');
-            if (key) result[key] = val;
-          }
-        }
-        return result;
-      })
-      .catch(function (err) {
-        console.warn("Gagal load Sheet, menggunakan data cadangan.");
-        return {}; 
-      });
-  }
-
-  function init() {
-    setGuestName(); bindOpen(); render(); startCountdown();
-    loadData().then(function (res) { DATA = res || {}; render(); startCountdown(); });
-  }
-  
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-})();
-</script>
-</body>
-</html>
+    if (isNaN(target)) target = new Date('2026-11-16T16:00:00+07:00').getTime
