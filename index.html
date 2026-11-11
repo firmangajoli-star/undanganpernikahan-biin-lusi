@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Undangan Pernikahan Tobi'in & Lusi</title>
 
-<!-- ================= META TAGS ================= -->
+<!-- ================= META TAGS UNTUK WHATSAPP & MEDSOS ================= -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Undangan Pernikahan Tobi'in & Lusi">
 <meta property="og:description" content="Kami mengundang Anda untuk hadir di hari bahagia kami. Senin, 16 November 2026.">
@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="Undangan Pernikahan Tobi'in & Lusi">
 <meta name="twitter:description" content="Kami mengundang Anda untuk hadir di hari bahagia kami.">
 <meta name="twitter:image" content="https://files.catbox.moe/yrv890.jpg">
-<!-- ============================================ -->
+<!-- ==================================================================== -->
 
 <!-- ================= PRELOAD GAMBAR ================= -->
 <link rel="preload" as="image" href="https://files.catbox.moe/dfnrw0.jpg">
@@ -59,106 +59,30 @@ button{font-family:inherit}
 a{text-decoration:none}
 
 /* ============================================= */
-/* ========== VIDEO COVER PEMBUKA ========== */
+/* ========== ANIMASI SLIDE (EFEK HIDUP) ======= */
 /* ============================================= */
-#video-cover {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  transition: opacity 1s ease, visibility 1s ease;
-}
-#video-cover.hide {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-#video-cover iframe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100vw;
-  height: 56.25vw; 
-  min-height: 100vh;
-  min-width: 177.77vh;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  border: none;
-}
-
-/* Overlay Transparan (Video lebih terlihat) */
-.video-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.3) 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  padding-bottom: 15vh;
-  z-index: 1000;
-  color: var(--gold-l);
-  text-align: center;
-  pointer-events: none;
-}
-
-/* Animasi Slide untuk Nama */
-.video-overlay h1 {
-  font-family: 'Pinyon Script', cursive;
-  font-size: clamp(3rem, 15vw, 4.5rem);
-  font-weight: 400;
-  line-height: 1.1;
-  margin-bottom: 10px;
-  text-shadow: 0 2px 18px rgba(0,0,0,0.9);
-  opacity: 0;
-  transform: translateX(-60px);
-  animation: slideInLeft 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-/* Animasi Slide untuk Tanggal */
-.video-overlay p {
-  font-family: 'Cinzel', serif;
-  font-size: 0.9rem;
-  letter-spacing: 0.2em;
-  opacity: 0;
-  transform: translateX(60px);
-  animation: slideInRight 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s forwards;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.9);
-}
-
 @keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
   to { opacity: 1; transform: translateX(0); }
 }
 @keyframes slideInRight {
+  from { opacity: 0; transform: translateX(50px); }
   to { opacity: 1; transform: translateX(0); }
 }
+@keyframes slideInBottom {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* Tombol skip */
-.skip-btn {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1001;
-  background: rgba(0,0,0,0.5);
-  border: 1px solid rgba(201,162,39,0.8);
-  color: var(--gold-l);
-  padding: 10px 24px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  cursor: pointer;
-  backdrop-filter: blur(5px);
-  transition: background 0.3s;
-  pointer-events: auto;
-}
-.skip-btn:hover {
-  background: rgba(201,162,39,0.3);
-}
+/* Animasi Berurutan untuk Cover */
+.cover-top { animation: slideInLeft 1s ease 0.2s both; }
+.cover-orn { animation: slideInRight 1s ease 0.4s both; }
+.cover-names { animation: slideInLeft 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s both; }
+.cover-date { animation: slideInRight 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s both; }
+.cover-line { animation: slideInBottom 1s ease 1s both; }
+.cover-guest { animation: slideInBottom 1s ease 1.2s both; }
+#openBtn { animation: slideInBottom 1s ease 1.4s both; }
+.cover-note { animation: slideInBottom 1s ease 1.6s both; }
 
 /* ============================================= */
 /* ========== COVER UTAMA ========== */
@@ -172,7 +96,7 @@ a{text-decoration:none}
 .cover.hide{transform:translateY(-100%);opacity:0;pointer-events:none}
 .cover-frame{position:absolute;inset:14px;border:1px solid rgba(201,162,39,.55);border-radius:8px;pointer-events:none;}
 .cover-frame::before{content:'';position:absolute;inset:6px;border:1px solid rgba(201,162,39,.25);border-radius:5px;}
-.cover-inner{position:relative;text-align:center;max-width:340px;width:100%;animation:fadeUp 1.2s ease both;}
+.cover-inner{position:relative;text-align:center;max-width:340px;width:100%;}
 .cover-top{font-size:.65rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold-l);opacity:.9;}
 .cover-orn{margin:16px 0 4px;color:var(--gold);font-size:1rem;letter-spacing:.5em;}
 .cover-names{font-family:'Pinyon Script', cursive;font-size:clamp(3rem, 15vw, 4.2rem);font-weight:400;line-height:1.1;color:var(--gold-l);text-shadow:0 2px 18px rgba(201,162,39,.45);margin:6px 0 10px;}
@@ -182,7 +106,6 @@ a{text-decoration:none}
 .cover-guest span{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(247,241,230,.6);}
 .cover-guest strong{font-family:'Cinzel', serif;font-weight:600;font-size:.95rem;color:var(--cream);letter-spacing:.05em;}
 .cover-note{margin-top:16px;font-size:.6rem;letter-spacing:.12em;color:rgba(247,241,230,.45);}
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
 /* ---------- TOMBOL ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:999px;border:1px solid rgba(201,162,39,.7);background:linear-gradient(180deg, rgba(201,162,39,.3), rgba(201,162,39,.1));color:var(--gold-l);font-size:.75rem;letter-spacing:.16em;text-transform:lowercase;cursor:pointer;transition:transform .2s ease, box-shadow .3s ease, background .3s ease;-webkit-appearance:none;text-decoration:none;}
@@ -203,6 +126,37 @@ a{text-decoration:none}
 .bismillah{font-size:1.4rem;color:var(--gold-l);line-height:2;margin-bottom:14px;font-family:'Cinzel', serif;}
 .lead{font-size:.85rem;line-height:1.9;color:rgba(247,241,230,.8);max-width:320px;margin:10px auto 0;}
 .muted{font-size:.8rem;line-height:1.9;color:rgba(247,241,230,.7);margin-top:6px;}
+
+/* ---------- PUISI KHABAR MUBTADA ---------- */
+.quote-block {
+  margin: 25px auto;
+  padding: 24px 20px;
+  border-top: 1px solid rgba(201,162,39,.4);
+  border-bottom: 1px solid rgba(201,162,39,.4);
+  max-width: 340px;
+  background: linear-gradient(180deg, rgba(201,162,39,.08) 0%, rgba(201,162,39,0) 100%);
+  position: relative;
+}
+.arabic-quote {
+  font-family: 'Traditional Arabic', 'Scheherazade', serif;
+  font-size: 1.6rem;
+  color: var(--gold-l);
+  margin-bottom: 8px;
+  line-height: 1.8;
+  text-shadow: 0 0 10px rgba(201,162,39,.3);
+}
+.latin-quote {
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--gold);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+.translation-quote {
+  font-size: 0.8rem;
+  line-height: 1.9;
+  color: rgba(247,241,230,.85);
+}
 
 /* ---------- MEMPELAI ---------- */
 .couple{margin-top:8px}
@@ -293,34 +247,26 @@ a{text-decoration:none}
 @media(min-width:520px){ #musicBtn{right:calc(50% - 224px)} }
 #ytplayer{position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:.01;overflow:hidden;pointer-events:none;z-index:-1;}
 
-/* ---------- REVEAL ---------- */
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease, transform .9s ease}
-.reveal.show{opacity:1;transform:none}
+/* ---------- REVEAL SAAT SCROLL (Animasi Slide) ---------- */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s ease, transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);}
+.reveal.show{opacity:1;transform:translateY(0);}
+
+/* Animasi Khusus Teks di Dalam Section agar bergantian */
+.section .sec-title { transform: translateX(-30px); transition: transform 1s ease 0.2s, opacity 1s ease 0.2s; opacity: 0; }
+.section.show .sec-title { transform: translateX(0); opacity: 1; }
+
+.section .muted, .section .lead, .section .bismillah, .section .quote-block { transform: translateX(30px); transition: transform 1s ease 0.4s, opacity 1s ease 0.4s; opacity: 0; }
+.section.show .muted, .section.show .lead, .section.show .bismillah, .section.show .quote-block { transform: translateX(0); opacity: 1; }
+
+.section .card, .section .tl-item, .section .bank, .section .addr-card, .section .video-wrapper { transform: translateY(30px); transition: transform 1s ease 0.5s, opacity 1s ease 0.5s; opacity: 0; }
+.section.show .card, .section.show .tl-item, .section.show .bank, .section.show .addr-card, .section.show .video-wrapper { transform: translateY(0); opacity: 1; }
+
 </style>
 </head>
 <body class="locked">
 
-<!-- ============================================= -->
-<!-- ========== VIDEO COVER PEMBUKA ========== -->
-<!-- ============================================= -->
-<div id="video-cover">
-  <iframe 
-    src="https://drive.google.com/file/d/1m5VT6xoYig-Aw1qNAI6kkX0nOHTy9rOf/preview?autoplay=1&mute=1" 
-    allow="autoplay; encrypted-media" 
-    allowfullscreen>
-  </iframe>
-  
-  <!-- Overlay Transparan + Animasi Slide -->
-  <div class="video-overlay">
-    <h1>tobi'in & lusi</h1>
-    <p>senin, 16 november 2026</p>
-  </div>
-  
-  <button class="skip-btn" id="skipBtn">lewati video</button>
-</div>
-
 <!-- ================= COVER UTAMA ================= -->
-<div id="cover" class="cover" style="display:none;">
+<div id="cover" class="cover">
   <div class="cover-frame"></div>
   <div class="cover-inner">
     <div class="cover-top">undangan pernikahan</div>
@@ -339,9 +285,23 @@ a{text-decoration:none}
 
 <!-- ================= ISI UNDANGAN ================= -->
 <main id="invitation" class="invitation">
+  
+  <!-- PEMBUKAAN (BISMILLAH & PUISI) -->
   <section class="section batik reveal">
     <p class="bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
     <p class="muted">assalamu'alaikum warahmatullahi wabarakatuh</p>
+    
+    <!-- TEKS PUISI KHABAR MUBTADA -->
+    <div class="quote-block">
+      <p class="arabic-quote">وَالْخَبَرُ جُزْءٌ مُتِمٌّ فَائِدَةْ</p>
+      <p class="latin-quote">Wal khabaru juz'un mutimmun faidah</p>
+      <p class="translation-quote">
+        Cinta kami seperti Khabar yang menyempurnakan Mubtada.<br>
+        Aku tak sempurna tanpa kehadiranmu, cintaku selalu menetap padamu, meski tak terucap, ia tak pernah hilang untukmu.
+      </p>
+    </div>
+    <!-- END TEKS PUISI -->
+
     <p class="lead">dengan memohon rahmat dan ridho allah swt, kami bermaksud menyelenggarakan pernikahan putra-putri kami</p>
   </section>
 
@@ -381,7 +341,7 @@ a{text-decoration:none}
     </div>
   </section>
 
-  <!-- VIDEO SECTION (DI BAWAH GALERI) -->
+  <!-- VIDEO SECTION -->
   <section class="section reveal">
     <h2 class="sec-title">momen bahagia</h2>
     <div class="orn">❁</div>
@@ -583,45 +543,7 @@ a{text-decoration:none}
     });
   }
 
-  // ===================================================
-  // LOGIKA VIDEO PEMBUKA & TOMBOL SKIP
-  // ===================================================
-  var videoCover = qs('#video-cover');
-  var mainCover = qs('#cover');
-  var skipBtn = qs('#skipBtn');
-  var hasTransitioned = false;
-
-  function showMainCover() {
-    if (hasTransitioned) return;
-    hasTransitioned = true;
-    
-    videoCover.style.opacity = '0';
-    
-    setTimeout(function() {
-      videoCover.style.display = 'none';
-      mainCover.style.display = 'flex';
-    }, 800);
-  }
-
-  // Tombol skip untuk melewati video
-  skipBtn.addEventListener('click', function(e) {
-    e.stopPropagation(); 
-    showMainCover();
-  });
-
-  // Jika pengunjung mengklik area video cover
-  videoCover.addEventListener('click', showMainCover);
-
-  // SISTEM PENGAMAN: Jika video gagal dimuat, paksa lewati setelah 5 detik
-  setTimeout(function() {
-    if (!hasTransitioned) {
-      showMainCover();
-    }
-  }, 5000);
-
-  // ===================================================
   // LOAD DATA DARI GOOGLE SHEET
-  // ===================================================
   function loadData() {
     var sheetUrl = 'https://docs.google.com/spreadsheets/d/1nH8asn81GKzYq2Fquk7cDrTpWPsBEPjiZjebpo0V0A4/gviz/tq?tqx=out:csv';
     return fetch(sheetUrl)
