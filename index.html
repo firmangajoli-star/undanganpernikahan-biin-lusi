@@ -58,43 +58,7 @@ img{display:block;max-width:100%}
 button{font-family:inherit}
 a{text-decoration:none}
 
-/* ---------- VIDEO COVER PEMBUKA ---------- */
-#video-cover {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 1s ease, visibility 1s ease;
-}
-#video-cover.hide {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-#video-cover video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-/* Teks petunjuk skip video */
-.video-hint {
-  position: absolute;
-  bottom: 40px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  color: rgba(255,255,255,0.6);
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  animation: blink 2s infinite;
-  pointer-events: none;
-}
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-/* ---------- COVER UTAMA ---------- */
+/* ---------- cover utama ---------- */
 .cover{
   position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:26px;
   background-color: rgba(10, 5, 2, 0.75); backdrop-filter: blur(3px);
@@ -173,6 +137,20 @@ a{text-decoration:none}
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 @keyframes scrollGallery { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 6px)); } }
 
+/* ---------- video section ---------- */
+.video-wrapper {
+  margin-top: 20px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid rgba(201,162,39,.6);
+  box-shadow: 0 4px 15px rgba(0,0,0,.6);
+  background: #000;
+}
+.video-wrapper video {
+  width: 100%;
+  display: block;
+}
+
 /* ---------- love story ---------- */
 .tl{text-align:left;position:relative;margin-top:26px;padding-left:28px;}
 .tl::before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:linear-gradient(180deg,transparent,rgba(201,162,39,.8),transparent);}
@@ -212,15 +190,8 @@ a{text-decoration:none}
 </head>
 <body class="locked">
 
-<!-- ================= VIDEO COVER PEMBUKA ================= -->
-<div id="video-cover">
-  <video id="opening-video" src="https://files.catbox.moe/sw58ym.mp4" autoplay muted playsinline></video>
-  <div class="video-hint">ketuk layar untuk melewati</div>
-</div>
-
 <!-- ================= COVER UTAMA ================= -->
-<!-- Menggunakan display:none sebagai awalan, akan dimunculkan oleh JS -->
-<div id="cover" class="cover" style="display:none;">
+<div id="cover" class="cover">
   <div class="cover-frame"></div>
   <div class="cover-inner">
     <div class="cover-top">undangan pernikahan</div>
@@ -272,6 +243,7 @@ a{text-decoration:none}
     <div class="card" id="resepsiCard"></div>
   </section>
 
+  <!-- GALERI FOTO -->
   <section class="section batik reveal gallery-section">
     <h2 class="sec-title">galeri foto</h2>
     <div class="orn">❁</div>
@@ -280,13 +252,23 @@ a{text-decoration:none}
     </div>
   </section>
 
+  <!-- VIDEO SECTION (BARU DITAMBAHKAN DI SINI) -->
   <section class="section reveal">
+    <h2 class="sec-title">momen bahagia</h2>
+    <div class="orn">❁</div>
+    <div class="video-wrapper">
+      <!-- Video sudah ditambahkan kontrol agar bisa diputar manual -->
+      <video src="https://files.catbox.moe/sw58ym.mp4" controls playsinline preload="metadata"></video>
+    </div>
+  </section>
+
+  <section class="section batik reveal">
     <h2 class="sec-title">perjalanan cinta</h2>
     <div class="orn">❁</div>
     <div class="tl" id="storyList"></div>
   </section>
 
-  <section class="section batik reveal">
+  <section class="section reveal">
     <h2 class="sec-title">tanda kasih</h2>
     <div class="orn">❁</div>
     <p class="muted">tanpa mengurangi rasa hormat, bagi anda yang ingin memberikan tanda kasih untuk kami</p>
@@ -294,7 +276,7 @@ a{text-decoration:none}
     <div class="addr-card" id="giftAddr"></div>
   </section>
 
-  <section class="section reveal">
+  <section class="section batik reveal">
     <p class="muted">merupakan suatu kebahagiaan dan kehormatan bagi kami, apabila bapak/ibu/saudara berkenan hadir dan memberikan doa restu</p>
     <div class="orn">❁</div>
     <p class="muted">wassalamu'alaikum warahmatullahi wabarakatuh</p>
@@ -455,49 +437,6 @@ a{text-decoration:none}
   function setGuestName() {
     try { var p = new URLSearchParams(window.location.search), to = p.get('to') || p.get('kepada') || ''; if (to) qs('#guestName').textContent = decodeURIComponent(to.replace(/\+/g, ' ')); } catch (e) {}
   }
-
-  // ==========================================
-  // LOGIKA VIDEO PEMBUKA & TOMBOL BUKA UNDANGAN
-  // ==========================================
-  var videoCover = qs('#video-cover');
-  var openingVideo = qs('#opening-video');
-  var mainCover = qs('#cover');
-  var hasTransitioned = false; // Mencegah transisi berjalan dua kali
-
-  function showMainCover() {
-    if (hasTransitioned) return;
-    hasTransitioned = true;
-    
-    // Transisi memudar (fade out) untuk video
-    videoCover.style.opacity = '0';
-    
-    setTimeout(function() {
-      videoCover.style.display = 'none';
-      mainCover.style.display = 'flex'; // Tampilkan cover utama
-      try { openingVideo.pause(); } catch(e) {}
-    }, 800);
-  }
-
-  // 1. Jika video selesai diputar
-  openingVideo.addEventListener('ended', showMainCover);
-
-  // 2. Jika video gagal dimuat (misal error jaringan)
-  openingVideo.addEventListener('error', showMainCover);
-
-  // 3. Jika pengunjung mengklik layar video (untuk skip)
-  videoCover.addEventListener('click', showMainCover);
-
-  // 4. SISTEM PENGAMAN (Fallback): 
-  // Jika karena alasan tertentu autoplay diblokir (video tidak berputar)
-  // Kita paksa tampilkan cover utama setelah 4 detik.
-  setTimeout(function() {
-    if (!hasTransitioned) {
-      if (openingVideo.paused) {
-        showMainCover();
-      }
-    }
-  }, 4000);
-
 
   function bindOpen() {
     qs('#openBtn').addEventListener('click', function () {
